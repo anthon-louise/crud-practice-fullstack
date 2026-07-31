@@ -17,5 +17,17 @@ export const createNote = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).json({
     message: "Note created"
   });
-  
+
+});
+
+export const getNotes = asyncHandler(async (req: Request, res: Response) => {
+  const notes = await pool.query<Note>(`
+    SELECT *
+    FROM notes
+    `);
+
+  res.json({
+    notes: notes.rows,
+    message: "Notes fetched"
+  })
 });
