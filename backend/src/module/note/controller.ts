@@ -62,3 +62,42 @@ export const getNoteById = asyncHandler(async (req: Request, res: Response) => {
     });
 
 });
+
+export const updateNote = asyncHandler(async (req: Request, res: Response) => {
+
+  const noteId = req.params.id;
+
+  const {title, content} = updateNoteSchema.parse(req.body);
+
+  const note = await pool.query(`
+    UPDATE notes
+    SET title=$1, content=$2
+    WHERE id=$3
+    `, [title, content, noteId]);
+
+    if (note.rowCount === 0) {
+      throw new AppError("Note not found", 404);
+    }
+
+    res.status(200).json({
+      message: "Note updated"
+    });
+});
+
+export const deleteNote = asyncHandler(async (req: Request, res: Response) => {
+
+  const noteId = req.params.id;
+
+  const note = await pool.query(`
+    DELETE FROM notes
+    WHERE id=$1
+    `, [noteId]);
+  
+    if (note.rowCount === 0) {
+      throw new AppError("Note not found", 404);
+    }
+
+    res.json({
+      message: "Note deleted"
+    })
+});
