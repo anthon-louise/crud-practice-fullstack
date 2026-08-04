@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useDeleteNote, useNotes } from "../hooks/notes"
 
 const NotesListPage = () => {
@@ -10,6 +11,8 @@ const NotesListPage = () => {
   return (
     <div>
       <h2>My Notes</h2>
+
+      <Link to="/new">Create Note</Link>
 
       {notes?.map((note) => (
         <div key={note.id}>
