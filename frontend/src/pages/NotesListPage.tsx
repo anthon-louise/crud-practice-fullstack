@@ -3,6 +3,7 @@ import { useDeleteNote, useNotes } from "../hooks/notes"
 
 const NotesListPage = () => {
   const {data: notes, isLoading, error} = useNotes( );
+  const deleteMutation = useDeleteNote();
 
 
   if (isLoading) return <p>Loading</p>
@@ -18,6 +19,7 @@ const NotesListPage = () => {
         <div key={note.id}>
           <h4>{note.title}</h4>
           <p>{note.content}</p>
+          <button onClick={() => deleteMutation.mutate(note.id)}>delete</button>
         </div>
       ))}
     </div>
