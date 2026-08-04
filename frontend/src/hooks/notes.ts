@@ -1,11 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { getNoteById, getNotes } from "../api/notes";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createNote, getNoteById, getNotes } from "../api/notes";
+import type { createNoteInput } from "../schemas/note";
+import { toast } from "sonner";
 
 export const  useNotes = () => {
   return useQuery({
     queryKey: ["notes"],
     queryFn: getNotes
-  })
+  });
 }
 
 export const useNote = (id: number) => {
@@ -13,5 +15,21 @@ export const useNote = (id: number) => {
     queryKey: ["notes", id],
     queryFn: () => getNoteById(id),
     enabled: !!id
-  })
+  });
 }
+
+export const useCreateNote = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: createNoteInput) => createNote(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["notes"]});
+      toast.success("Note created");
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || "Failed to create note")
+    }
+  });
+}
+
