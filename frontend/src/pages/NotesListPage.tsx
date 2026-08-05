@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDeleteNote, useNotes } from "../hooks/notes"
 
 const NotesListPage = () => {
+  const nav = useNavigate();
   const {data: notes, isLoading, error} = useNotes( );
   const deleteMutation = useDeleteNote();
 
@@ -19,7 +20,8 @@ const NotesListPage = () => {
         <div key={note.id}>
           <h4>{note.title}</h4>
           <p>{note.content}</p>
-          <button onClick={() => deleteMutation.mutate(note.id)}>delete</button>
+          <button onClick={() => nav(`/edit/${note.id}`)}>Update</button>
+          <button onClick={() => deleteMutation.mutate(note.id)}>Delete</button>
         </div>
       ))}
     </div>

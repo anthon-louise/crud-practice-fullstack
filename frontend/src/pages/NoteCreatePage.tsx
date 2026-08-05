@@ -27,12 +27,6 @@ const NoteCreatePage = () => {
     <div>
       <h3>Create Note</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <input placeholder="Content" {...register("content")} />
-          {errors.content && <p>
-            {errors.content.message}
-          </p>}
-        </div>
 
         <div>
           <input placeholder="Title" {...register("title")} />
@@ -41,8 +35,17 @@ const NoteCreatePage = () => {
           </p>}
         </div>
 
+        <div>
+          <input placeholder="Content" {...register("content")} />
+          {errors.content && <p>
+            {errors.content.message}
+          </p>}
+        </div>
+
+
+
         <button type="submit" disabled={createMutation.isPending}>
-            {createMutation.isPending ? "Creating..." : "Create"}
+          {createMutation.isPending ? "Creating..." : "Create"}
         </button>
 
         <Link to="/">Cancel</Link>
